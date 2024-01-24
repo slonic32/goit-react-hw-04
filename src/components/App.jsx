@@ -22,11 +22,6 @@ export default function App() {
   ReactModal.setAppElement("#root");
 
   async function getImages(filter, page) {
-    if (filter.trim() === "") {
-      alert("You need to enter search querry!");
-      return;
-    }
-
     setPage(page);
     setFilter(filter);
     setMore(false);
@@ -45,14 +40,12 @@ export default function App() {
       if (imageArray.total_pages > page) {
         setMore(true);
       }
-      console.log(imageArray);
     } catch (error) {
       if (page === 1) {
         //new search
         setImages([]);
       }
       setError(true);
-      console.log("error: ", error);
     } finally {
       setLoading(false);
     }
@@ -71,12 +64,12 @@ export default function App() {
     <>
       <SearchBar onSubmit={getImages}></SearchBar>
       <ImageGallery imagesArray={images} handleClick={openModal} />
-      <ImageModal image={currentImage} isOpen={modal} closeModal={closeModal} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {more && (
         <LoadMoreBtn onClick={getImages} filter={filter} currentPage={page} />
       )}
+      <ImageModal image={currentImage} isOpen={modal} closeModal={closeModal} />
     </>
   );
 }
